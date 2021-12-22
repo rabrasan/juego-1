@@ -3,6 +3,7 @@ namespace SpriteKind {
     export const player5 = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`myTile0`)
     game.over(false, effects.bubbles)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, location) {
@@ -28,10 +29,8 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, l
     music.baDing.play()
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`myTile`)
     game.over(false, effects.melt)
-})
-sprites.onOverlap(SpriteKind.malo, SpriteKind.Player, function (sprite, otherSprite) {
-    game.over(false, effects.confetti)
 })
 function nivel_2 () {
     premio.destroy()
@@ -47,12 +46,52 @@ function nivel_2 () {
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (direccion == 0 && nivel == 2) {
-        CONTADOR = 0
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . 2 2 2 2 . . . 
+            . . . . . . . 2 2 1 1 1 1 2 . . 
+            . . . . 2 2 3 3 1 1 1 1 1 1 . . 
+            . . 3 3 3 3 1 1 1 1 1 1 1 1 . . 
+            . . 1 1 1 1 1 1 1 1 1 1 1 1 . . 
+            . . 3 3 2 2 3 1 1 1 1 1 1 1 . . 
+            . . . . . . 2 2 3 1 1 1 1 2 . . 
+            . . . . . . . . . 2 2 2 2 . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, bueno, 200, 0)
+    }
+    if (direccion == 1 && nivel == 2) {
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . 2 2 2 2 . . . 
+            . . . . . . . 2 2 1 1 1 1 2 . . 
+            . . . . 2 2 3 3 1 1 1 1 1 1 . . 
+            . . 3 3 3 3 1 1 1 1 1 1 1 1 . . 
+            . . 1 1 1 1 1 1 1 1 1 1 1 1 . . 
+            . . 3 3 2 2 3 1 1 1 1 1 1 1 . . 
+            . . . . . . 2 2 3 1 1 1 1 2 . . 
+            . . . . . . . . . 2 2 2 2 . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, bueno, -200, 0)
     }
 })
 info.onCountdownEnd(function () {
     info.startCountdown(10)
     color_fondo(randint(0, 14))
+})
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
+    game.over(false, effects.confetti)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     if (bueno.overlapsWith(premio)) {
@@ -65,6 +104,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     }
     if (bueno.overlapsWith(premio3)) {
         info.changeScoreBy(1)
+        premio3.destroy()
     }
     if (bueno.overlapsWith(premio4)) {
         info.changeScoreBy(1)
@@ -141,7 +181,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     malo.setPosition(1024, 8)
     malo.follow(bueno, 25)
 })
-let CONTADOR = 0
+let projectile: Sprite = null
 let direccion = 0
 let nivel = 0
 let malo: Sprite = null
@@ -228,7 +268,7 @@ premio3 = sprites.create(img`
     . . . . . . 4 4 4 4 . . . . . . 
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Food)
-premio3.setPosition(96, 35)
+premio3.setPosition(120, 232)
 premio4 = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . 4 4 4 4 . . . . . . 
@@ -247,7 +287,7 @@ premio4 = sprites.create(img`
     . . . . . . 4 4 4 4 . . . . . . 
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Food)
-premio3.setPosition(224, 164)
+premio4.setPosition(224, 164)
 let nivel1 = sprites.create(img`
     6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 
     6 9 9 9 6 6 9 9 9 9 6 6 9 9 9 6 
@@ -266,7 +306,7 @@ let nivel1 = sprites.create(img`
     6 9 9 9 6 6 9 9 9 9 6 6 9 9 9 6 
     6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 
     `, SpriteKind.Food)
-nivel1.setPosition(8, 104)
+nivel1.setPosition(8, 120)
 bueno = sprites.create(img`
     8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
     8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
@@ -333,7 +373,7 @@ forever(function () {
         nivel1.destroy()
         nivel_2()
     }
-    if (info.score() == 31) {
+    if (info.score() == 26) {
         game.over(true, effects.confetti)
     }
     if (controller.right.isPressed() && nivel == 2) {
