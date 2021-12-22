@@ -139,6 +139,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
         2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
         `, SpriteKind.Enemy)
     malo.setPosition(1024, 8)
+    malo.follow(bueno, 25)
 })
 let CONTADOR = 0
 let direccion = 0
