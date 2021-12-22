@@ -28,22 +28,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, l
     info.changeScoreBy(1)
     music.baDing.play()
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
-    tiles.setTileAt(location, assets.tile`myTile`)
-    game.over(false, effects.melt)
-})
-function nivel_2 () {
-    premio.destroy()
-    premio2.destroy()
-    premio3.destroy()
-    premio3.destroy()
-    tiles.setTilemap(tilemap`nivel2`)
-    color_fondo(randint(0, 14))
-    bueno.ay = 200
-    malo.setPosition(1024, 8)
-    nivel = 2
-    info.startCountdown(10)
-}
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (direccion == 0 && nivel == 2) {
         projectile = sprites.createProjectileFromSprite(img`
@@ -86,6 +70,22 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             `, bueno, -200, 0)
     }
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`myTile`)
+    game.over(false, effects.melt)
+})
+function nivel_2 () {
+    premio.destroy()
+    premio2.destroy()
+    premio3.destroy()
+    premio3.destroy()
+    tiles.setTilemap(tilemap`nivel2`)
+    color_fondo(randint(0, 14))
+    bueno.ay = 200
+    malo.setPosition(1024, 8)
+    nivel = 2
+    info.startCountdown(10)
+}
 info.onCountdownEnd(function () {
     info.startCountdown(10)
     color_fondo(randint(0, 14))
@@ -182,8 +182,8 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     malo.follow(bueno, 25)
 })
 let projectile: Sprite = null
-let direccion = 0
 let nivel = 0
+let direccion = 0
 let malo: Sprite = null
 let bueno: Sprite = null
 let premio4: Sprite = null
